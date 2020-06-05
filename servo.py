@@ -45,3 +45,4 @@ class Servo:
 
 right_servo = Servo(12)
 right_servo.arm()
+time.sleep(1)
