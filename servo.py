@@ -19,7 +19,7 @@ class Servo:
 
     def arm(self):
         print('ARMING servo at pin {}, going to center position'.format(self.pin))
-        self.servo.start(self.center)
+        self.servo.start(self.max_low)
 
     def pre_flight_check(self, order=0):
         if order == 0:
@@ -45,5 +45,3 @@ class Servo:
 
 right_servo = Servo(12)
 right_servo.arm()
-right_servo.pre_flight_check(order=0)
-right_servo.pre_flight_check(order=1)
