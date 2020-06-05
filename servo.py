@@ -30,10 +30,10 @@ class Servo:
         if order == 0:
             time.sleep(0.5)
             print('LOW')
-            self.servo.ChangeDutyCycle(self.max_low)
+            self.servo.ChangeDutyCycle(11)
             time.sleep(0.5)
             print('UP')
-            self.servo.ChangeDutyCycle(self.max_high)
+            self.servo.ChangeDutyCycle(4)
         elif order == 1:
             time.sleep(0.5)
             print('LOW')
@@ -43,7 +43,7 @@ class Servo:
             self.servo.ChangeDutyCycle(self.max_low)
         time.sleep(0.5)
         print('CENTER')
-        self.servo.ChangeDutyCycle(self.center)
+        self.servo.ChangeDutyCycle(6.6)
         time.sleep(0.5)
 
     def change_pos(self, pos):
