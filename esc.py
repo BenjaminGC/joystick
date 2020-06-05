@@ -35,4 +35,5 @@ class Motor:
 
 
 motor_1 = Motor(12, max_power=10)
-motor_1.change_power(9, runtime=2)
+value = int(input('Power: '))
+motor_1.change_power(value, runtime=2)
