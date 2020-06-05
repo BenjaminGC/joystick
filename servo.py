@@ -14,6 +14,7 @@ class Servo:
 
     def __del__(self):
         self.servo.start(self.center)
+        time.sleep(1)
         GPIO.cleanup()
         print('Cleaning up GPIO pins...')
 
@@ -45,4 +46,4 @@ class Servo:
 
 right_servo = Servo(12)
 right_servo.arm()
-time.sleep(1)
+right_servo.pre_flight_check(order=0)
