@@ -13,7 +13,7 @@ class Servo:
         self.servo = GPIO.PWM(self.pin, 50)  # creating servo object at designated pin
 
     def __del__(self):
-        Servo.arm(self, level=True)
+        self.servo.start(self.center)
         GPIO.cleanup()
         print('Cleaning up GPIO pins...')
 
