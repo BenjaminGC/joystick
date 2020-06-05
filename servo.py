@@ -3,7 +3,7 @@ import time
 
 
 class Servo:
-    def __init__(self, pin=12, max_low=11, max_high=4, center=4):
+    def __init__(self, pin=12, max_low=11, max_high=4, center=6.6):
         self.pin = pin
         self.max_low = max_low
         self.max_high = max_high
@@ -28,15 +28,18 @@ class Servo:
 
     def pre_flight_check(self, order=0):
         if order == 0:
+            time.sleep(0.5)
             self.servo.ChangeDutyCycle(self.max_low)
             time.sleep(0.5)
             self.servo.ChangeDutyCycle(self.max_high)
-        if order == 1:
+        elif order == 1:
+            time.sleep(0.5)
             self.servo.ChangeDutyCycle(self.max_high)
             time.sleep(0.5)
             self.servo.ChangeDutyCycle(self.max_low)
         time.sleep(0.5)
         self.servo.ChangeDutyCycle(self.center)
+        time.sleep(0.5)
 
     def change_pos(self, pos):
         mp = [self.max_low, self.max_high]
@@ -50,4 +53,4 @@ class Servo:
 
 right_servo = Servo(12)
 right_servo.arm()
-right_servo.change_pos(8)
+right_servo.pre_flight_check()
