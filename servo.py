@@ -18,9 +18,14 @@ class Servo:
         GPIO.cleanup()
         print('Cleaning up GPIO pins...')
 
-    def arm(self):
-        print('ARMING servo at pin {}, going to center position'.format(self.pin))
-        self.servo.start(self.max_low)
+    def arm(self, level=False):
+        if level:
+            self.servo.ChangeDutyCycle(self.center)
+            time.sleep(0.5)
+        elif not level:
+            print('ARMING servo at pin {}, going to center position'.format(self.pin))
+            self.servo.ChangeDutyCycle(self.center)
+            time.sleep(0.5)
 
     def pre_flight_check(self, order=0):
         if order == 0:
