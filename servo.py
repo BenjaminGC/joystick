@@ -1,56 +1,53 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(12, GPIO.OUT)
-
-p = GPIO.PWM(12, 50)
-down=11
-center=6.6
-up=4
-p.start(center)
-
-def test_max(pin):
-        time.sleep(0.5)
-        pin.ChangeDutyCycle(down)
-        time.sleep(0.5)
-        pin.ChangeDutyCycle(up)
-        time.sleep(0.5)
-        pin.ChangeDutyCycle(center)
-        time.sleep(0.5)
-        GPIO.cleanup()
-        print("Done")
-
-
-def change_pos(pin):
-        pos=float(input('change pos to: '))
-        if up<=pos<=down:
-                pin.ChangeDutyCycle(pos)
-                print("Pos changed to {}".format(pos))
-        else:
-                print("Position unreachable")
-
-def change_pos_test(pin):
-        x=4
-        while x<=10:
-                pin.ChangeDutyCycle(x)
-                print("Servo pos: {}".format(x))
-                x+=0.1
-                time.sleep(0.1)
-
-        while x>=4:
-                pin.ChangeDutyCycle(x)
-                print("Servo pos: {}".format(x))
-                x-=0.1
-                time.sleep(0.1)
-
-while True:
-        try:
-                test_max(p)
-        except KeyboardInterrupt:
-                p.ChangeDutyCycle(center)
-                time.sleep(0.5)
-                print("exit")
+class Servo:
+        def __init__(self, pin=12, max_low=11, max_high=4, center=4):
+                self.pin = pin
+                self.max_low = max_low
+                self.max_high = max_high
+                self.center = center
+                GPIO.setmode(GPIO.BOARD)
+                GPIO.setup(self.pin, GPIO.OUT)
+                self.servo = GPIO.PWM(self.pin, 50)     # creating servo object at designated pin
+        
+        def __del__(self):
+                Servo.change_pos(self, level=True)
                 GPIO.cleanup()
-                break
+                print('Cleaning up GPIO pins...')
+                
+        def arm(self):
+                print('ARMING servo at pin {}, going to center position'.format(self.pin))
+                self.servo.start(self.center)
+        
+        def pre_flight_check(self, order=0):
+                if order == 0:
+                        self.servo.ChangeDutyCycle(self.max_low)
+                        time.sleep(0.5)
+                        self.servo.ChangeDutyCycle(self.max_high)
+                if order == 1:
+                        self.servo.ChangeDutyCycle(self.max_high)
+                        time.sleep(0.5)
+                        self.servo.ChangeDutyCycle(self.max_low)
+                time.sleep(0.5)
+                self.servo.ChangeDutyCycle(self.center)
 
+        def change_pos(self, pos, level=False):
+                if not level:
+                        mp = [self.max_low, self.max_high]
+                        print('Max up: {}\nMax down: {}'.format(mp[0], mp[1]))
+                        pos=float(input('change pos to: '))
+                        if mp[0] <= pos <= mp[1]:
+                                self.servo.ChangeDutyCycle(pos)
+                                print("Pos changed to {}".format(pos))
+                        else:
+                                raise ValueError("Position Unreachable! max low and high are {}, given position was {}".format(mp, pos))
+                elif level:
+                        print('servo at pin {} going to center position'.format(self.pin))
+                        self.servo.start(self.center)
+
+
+right_servo = Servo(12)
+right_servo.arm()
+right_servo.pre_flight_check(order=0)
+right_servo.pre_flight_check(order=1)
