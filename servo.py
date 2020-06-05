@@ -32,17 +32,16 @@ class Servo:
                 time.sleep(0.5)
                 self.servo.ChangeDutyCycle(self.center)
 
-        def change_pos(self, pos, level=False):
-                if not level:
+        def change_pos(self, pos=0, level=False):
+                if not level and pos !=0:
                         mp = [self.max_low, self.max_high]
                         print('Max up: {}\nMax down: {}'.format(mp[0], mp[1]))
-                        pos=float(input('change pos to: '))
                         if mp[0] <= pos <= mp[1]:
                                 self.servo.ChangeDutyCycle(pos)
                                 print("Pos changed to {}".format(pos))
                         else:
                                 raise ValueError("Position Unreachable! max low and high are {}, given position was {}".format(mp, pos))
-                elif level:
+                elif level or pos == 0:
                         print('servo at pin {} going to center position'.format(self.pin))
                         self.servo.start(self.center)
 
