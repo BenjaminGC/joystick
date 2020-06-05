@@ -50,4 +50,4 @@ class Servo:
 
 right_servo = Servo(12)
 right_servo.arm()
-right_servo.pre_flight_check(order=0)
+right_servo.change_pos(8)
