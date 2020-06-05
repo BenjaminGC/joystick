@@ -10,6 +10,8 @@ class Motor:
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.pin, GPIO.OUT)
         self.motor = GPIO.PWM(self.pin, 50)
+        Motor.arm(self)
+        print(self.motor)
         print('Motor initialized on pin {}'.format(pin))
 
     def __del__(self):
@@ -34,6 +36,6 @@ class Motor:
         self.motor.start(3)
 
 
-motor_1 = Motor(12, max_power=10)
+motor_1 = Motor(12, max_power=12)
 value = int(input('Power: '))
 motor_1.change_power(value, runtime=2)
