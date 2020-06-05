@@ -41,7 +41,7 @@ class Servo:
     def change_pos(self, pos):
         mp = [self.max_low, self.max_high]
         print('Max up: {}\nMax down: {}'.format(mp[0], mp[1]))
-        if mp[0] <= pos <= mp[1]:
+        if mp[1] <= pos <= mp[0]:
             self.servo.ChangeDutyCycle(pos)
             print("Pos changed to {}".format(pos))
         else:
