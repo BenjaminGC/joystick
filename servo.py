@@ -29,15 +29,20 @@ class Servo:
     def pre_flight_check(self, order=0):
         if order == 0:
             time.sleep(0.5)
+            print('LOW')
             self.servo.ChangeDutyCycle(self.max_low)
             time.sleep(0.5)
+            print('UP')
             self.servo.ChangeDutyCycle(self.max_high)
         elif order == 1:
             time.sleep(0.5)
+            print('LOW')
             self.servo.ChangeDutyCycle(self.max_high)
             time.sleep(0.5)
+            print('UP')
             self.servo.ChangeDutyCycle(self.max_low)
         time.sleep(0.5)
+        print('CENTER')
         self.servo.ChangeDutyCycle(self.center)
         time.sleep(0.5)
 
@@ -53,4 +58,4 @@ class Servo:
 
 right_servo = Servo(12)
 right_servo.arm()
-right_servo.pre_flight_check()
+right_servo.pre_flight_check(order=0)
